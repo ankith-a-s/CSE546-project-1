@@ -27,7 +27,7 @@ def create_instance():
             "Tags": [
                 {
                     "Key": "NAME",
-                    "Value": "App-Instance-"+instance_num
+                    "Value": "App-Instance-"+str(instance_num)
                 }
             ]
         }
