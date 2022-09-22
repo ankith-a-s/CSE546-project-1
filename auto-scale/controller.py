@@ -1,5 +1,4 @@
 import instance_manager as ec2_util
-import time
 import boto3
 
 sqs_client = boto3.client('sqs', region_name="us-east-1")
@@ -67,8 +66,8 @@ def auto_scale_instances():
                     ec2_util.create_instance()
 
 
-while True:
-    print("Starting Auto Scaling")
-    auto_scale_instances()
-    print("Wait for 30 seconds ... ...")
-    time.sleep(30)
+
+print("Starting Auto Scaling")
+auto_scale_instances()
+print("Wait for 30 seconds ... ...")
+exit(0)
