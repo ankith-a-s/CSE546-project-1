@@ -22,6 +22,18 @@ TAG_SPEC = [
 
 
 def create_instance():
+    instance_num=len(get_running_instances())+1
+    TAG_SPEC = [
+        {
+            "ResourceType": "instance",
+            "Tags": [
+                {
+                    "Key": "NAME",
+                    "Value": "App-Instance-"+instance_num
+                }
+            ]
+        }
+    ]
     instances = ec2_client.run_instances(
         ImageId=AMI_ID,
         MinCount=1,
