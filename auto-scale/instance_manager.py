@@ -39,7 +39,7 @@ def create_instance():
         InstanceType="t2.micro",
         KeyName=KEY_NAME,
         SubnetId="subnet-0363c5f153dd2e1fb",
-        SecurityGroupsIds=["sg-023a5e1617e20d3cd"],
+        SecurityGroupIds=["sg-023a5e1617e20d3cd"],
         TagSpecifications=TAG_SPEC
     )
     print("Creating instance:", instances["Instances"][0]["InstanceId"])
