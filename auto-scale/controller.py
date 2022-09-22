@@ -12,7 +12,7 @@ def get_sqs_url(client):
 
 INPUT_QUEUE = get_sqs_url(sqs_client)
 
-WEB_TIER = "i-068f94a92ccf5d8e5"
+WEB_TIER = "i-0e851527a1b11de77"
 
 
 def auto_scale_instances():
