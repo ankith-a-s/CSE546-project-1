@@ -1,10 +1,8 @@
 import boto3
 
-ec2_client = boto3.client('ec2', region_name='us-east-1',
-                          aws_secret_access_key="B8lwmuB6TU/Auv5VItwReN7YKfjPEiNGAL7tW8OT",
-                          aws_access_key_id="AKIA2LNHGEXWNR5DVAWE")
+ec2_client = boto3.client('ec2', region_name='us-east-1')
 
-AMI_ID = "ami-0bb1040fdb5a076bc"
+AMI_ID = "ami-0c6f34eaf3b2f24fe"
 ROLE_ARN = "arn:aws:iam::378107157540:instance-profile/sqs-s3-ec2-full-access"
 SECURITY_GROUP = "sg-0dc6c0eb5cc4d9d27"
 KEY_NAME = "new_app"
@@ -40,6 +38,8 @@ def create_instance():
         MaxCount=1,
         InstanceType="t2.micro",
         KeyName=KEY_NAME,
+        SubnetId="subnet-0363c5f153dd2e1fb",
+        SecurityGroups=["sg-023a5e1617e20d3cd"],
         TagSpecifications=TAG_SPEC
     )
     print("Creating instance:", instances["Instances"][0]["InstanceId"])
