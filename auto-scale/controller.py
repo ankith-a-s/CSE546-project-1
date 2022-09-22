@@ -2,9 +2,7 @@ import instance_manager as ec2_util
 import time
 import boto3
 
-sqs_client = boto3.client('sqs', region_name="us-east-1",
-                          aws_secret_access_key="B8lwmuB6TU/Auv5VItwReN7YKfjPEiNGAL7tW8OT",
-                          aws_access_key_id="AKIA2LNHGEXWNR5DVAWE")
+sqs_client = boto3.client('sqs', region_name="us-east-1")
 
 
 def get_sqs_url(client):
