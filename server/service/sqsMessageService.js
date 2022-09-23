@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 
 //Configure region
-AWS.config.update({ region: "us-west-1" });
+AWS.config.update({ region: "us-east-1" });
 //Create SQS client
 const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
 
