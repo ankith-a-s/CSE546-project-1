@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 const upload = multer({ dest: __dirname + "uploads/" });
 
-app.post("/upload_files", upload.single("file"), async (req, res) => {
+app.post("/upload_files", upload.single("myfile"), async (req, res) => {
   const s3Result = await uploadImageToS3(req.file);
   await unlinkFile(req.file.path);
   if (s3Result) {

@@ -12,6 +12,7 @@ def get_sqs_url(client):
 INPUT_QUEUE = get_sqs_url(sqs_client)
 
 WEB_TIER = "i-0ba876e851919cbfb"
+APP_TIER = "i-03a1ef7266300805f"
 
 
 def auto_scale_instances():
@@ -26,11 +27,13 @@ def auto_scale_instances():
     running_instances = ec2_util.get_running_instances()
     stopped_instances = ec2_util.get_stopped_instances()
     running_instances.remove(WEB_TIER)
+    running_instances.remove(APP_TIER)
 
     if queue_length == 0:
         all_instances = ec2_util.get_running_instances()
         all_instances.remove(WEB_TIER)
-        print("Queue is empty, shutting down all instances (downscaling)")
+        all_instances.remove(APP_TIER)
+        print("Queue is empty, shutting down all instances except 1 (downscaling)")
         ec2_util.stop_multiple_instances(all_instances)
         return
 
@@ -54,10 +57,10 @@ def auto_scale_instances():
                     ec2_util.create_instance()
 
     else:
-        if len(running_instances) < 19:
+        if len(running_instances) < 18:
             length_of_running = len(running_instances)
             length_of_stopped = len(stopped_instances)
-            needed_instances = 19 - length_of_running
+            needed_instances = 18 - length_of_running
             if length_of_stopped >= needed_instances:
                 ec2_util.start_multiple_instances(stopped_instances[:needed_instances])
             else:
