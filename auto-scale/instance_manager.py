@@ -2,10 +2,9 @@ import boto3
 
 ec2_client = boto3.client('ec2', region_name='us-east-1')
 
-AMI_ID = "ami-0557c5e83a93b07d2"
+AMI_ID = "ami-095947f4726d41b99"
 ROLE_ARN = "arn:aws:iam::378107157540:instance-profile/sqs-s3-ec2-full-access"
-SECURITY_GROUP = "sg-0dc6c0eb5cc4d9d27"
-KEY_NAME = "keyPair"
+KEY_NAME = "KeyPair1"
 TAG_SPEC = [
     {
         "ResourceType": "instance",
@@ -38,8 +37,8 @@ def create_instance():
         MaxCount=1,
         InstanceType="t2.micro",
         KeyName=KEY_NAME,
-        SubnetId="subnet-0363c5f153dd2e1fb",
-        SecurityGroupIds=["sg-023a5e1617e20d3cd"],
+        # SubnetId="subnet-0363c5f153dd2e1fb",
+        # SecurityGroupIds=["sg-023a5e1617e20d3cd"],
         TagSpecifications=TAG_SPEC
     )
     print("Creating instance:", instances["Instances"][0]["InstanceId"])

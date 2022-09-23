@@ -3,7 +3,7 @@ const S3 = require("aws-sdk/clients/s3");
 const fs = require("fs");
 const util = require("util");
 
-const bucketName = "image-recognition-cloud";
+const bucketName = "inputimageabhinav0907";
 const region = "us-east-1";
 
 const s3 = new S3({

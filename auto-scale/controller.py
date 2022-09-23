@@ -5,13 +5,13 @@ sqs_client = boto3.client('sqs', region_name="us-east-1")
 
 
 def get_sqs_url(client):
-    sqs_queue = client.get_queue_url(QueueName="inputQueue")
+    sqs_queue = client.get_queue_url(QueueName="Response-Queue")
     return sqs_queue["QueueUrl"]
 
 
 INPUT_QUEUE = get_sqs_url(sqs_client)
 
-WEB_TIER = "i-0e851527a1b11de77"
+WEB_TIER = "i-0ba876e851919cbfb"
 
 
 def auto_scale_instances():
@@ -69,5 +69,4 @@ def auto_scale_instances():
 
 print("Starting Auto Scaling")
 auto_scale_instances()
-print("Wait for 30 seconds ... ...")
 exit(0)
