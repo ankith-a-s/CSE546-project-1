@@ -5,7 +5,7 @@ sqs_client = boto3.client('sqs', region_name="us-east-1")
 
 
 def get_sqs_url(client):
-    sqs_queue = client.get_queue_url(QueueName="Response-Queue")
+    sqs_queue = client.get_queue_url(QueueName="Request-Queue")
     return sqs_queue["QueueUrl"]
 
 
