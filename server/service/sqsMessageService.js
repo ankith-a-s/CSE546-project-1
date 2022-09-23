@@ -43,27 +43,29 @@ const receiveMessageFromSqs = (imageName, res) => {
         data,
       });
     } else {
-      console.log(data.Messages[0].Body);
-      const imageData = JSON.parse(data.Messages[0].Body);
-      console.log(imageData);
-      if (Object.keys(imageData)[0] == imageName) {
-        const deleteParams = {
-          QueueUrl: `https://sqs.us-east-1.amazonaws.com/${awsAccountId}/${sqsOutputQueue}`,
-          ReceiptHandle: data.Messages[0].ReceiptHandle,
-        };
-        sqs.deleteMessage(deleteParams, (err, data) => {
-          if (err) {
-            console.log(err, err.stack);
-            res.status(400).send({
-              message: "Some error occured",
-              data,
-            });
-          } else {
-            res.status(200).send({
-              message: imageData[imageName],
-            });
-          }
-        });
+      if (data.Messages) {
+        const imageData = JSON.parse(data.Messages[0].Body);
+        if (Object.keys(imageData)[0] == imageName) {
+          const deleteParams = {
+            QueueUrl: `https://sqs.us-east-1.amazonaws.com/${awsAccountId}/${sqsOutputQueue}`,
+            ReceiptHandle: data.Messages[0].ReceiptHandle,
+          };
+          sqs.deleteMessage(deleteParams, (err, data) => {
+            if (err) {
+              console.log(err, err.stack);
+              res.status(400).send({
+                message: "Some error occured",
+                data,
+              });
+            } else {
+              res.status(200).send({
+                message: imageData[imageName],
+              });
+            }
+          });
+        } else {
+          return receiveMessageFromSqs(imageName, res);
+        }
       } else {
         return receiveMessageFromSqs(imageName, res);
       }
