@@ -103,11 +103,11 @@ def write_to_bucket(s3_bucket_name, image_name): ##function to upload classifica
     s3_client.put_object(Bucket = s3_bucket_name, Body=message_body, Key = file_name)
 
 if __name__=="__main__":
-    request_queue = get_queue_url("inputQueue")
-    response_queue = get_queue_url("outputQueue")
+    request_queue = get_queue_url("Request-Queue")
+    response_queue = get_queue_url("Response-Queue")
     image_name, reciept_handle = read_message(request_queue)
-    input_bucket = "image-recognition-cloud"
-    output_bucket = "output-classification-cloud"
+    input_bucket = "inputimageabhinav0907"
+    output_bucket = "outputresultabhinav0907"
     if image_name!=None and reciept_handle!=None : 
         downoad_images(input_bucket, image_name)
         run_classification_engine()
@@ -117,4 +117,4 @@ if __name__=="__main__":
         delete_image(image_name)
         exit(0)
     else:
-        exit(0)
+        exit(1)
