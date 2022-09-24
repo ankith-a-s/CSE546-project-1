@@ -15,6 +15,18 @@ def get_queue_url(queue_name):
     return queue_name["QueueUrl"]
 
 
+def write_message(queue_url, message_body):
+    sqs_client = boto3.client("sqs", region_name = "us-east-1")
+    # name = "Request-Queue"
+    # message = {"Image_Name": "Test_0.jpeg"}
+    message = message_body
+    response = sqs_client.send_message(
+        QueueUrl = queue_url,
+        MessageBody = json.dumps(message)
+    )
+   
+    return response['ResponseMetadata']["HTTPStatusCode"]
+
 def read_message(queue_url):
     response = []
     sqs_client = boto3.client("sqs", region_name = "us-east-1")
