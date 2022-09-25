@@ -1,4 +1,19 @@
 const AWS = require("aws-sdk");
+const bunyan = require("bunyan");
+
+const logger = bunyan.createLogger({
+  name: "classificationResponseLogs",
+  streams: [
+    {
+      level: "debug",
+      stream: process.stdout,
+    },
+    {
+      level: "info",
+      path: "./logs.txt",
+    },
+  ],
+});
 
 //Configure region
 AWS.config.update({ region: "us-east-1" });
@@ -61,6 +76,8 @@ const receiveMessageFromSqs = (imageName, res) => {
               res.status(200).send({
                 message: imageData[imageName],
               });
+              console.log("reaching this point");
+              logger.info(`Served request with image name ${imageName}`);
             }
           });
         } else {
