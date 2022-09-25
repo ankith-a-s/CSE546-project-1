@@ -4,6 +4,21 @@ const multer = require("multer");
 const fs = require("fs");
 const util = require("util");
 const unlinkFile = util.promisify(fs.unlink);
+const bunyan = require("bunyan");
+
+const logger = bunyan.createLogger({
+  name: "classificationResponseLogs",
+  streams: [
+    {
+      level: "debug",
+      stream: process.stdout,
+    },
+    {
+      level: "info",
+      path: "./logs.txt",
+    },
+  ],
+});
 
 const {
   sendMessageToSqs,
@@ -22,12 +37,15 @@ app.post("/upload_files", upload.single("myfile"), async (req, res) => {
   await unlinkFile(req.file.path);
   if (s3Result) {
     const sqsResult = await sendMessageToSqs(req.file.originalname, res);
-    if (sqsResult) {
+    if (sqsResult != undefined) {
       const sqsResponse = await receiveMessageFromSqs(
         req.file.originalname,
         res
       );
       console.log("SQS response", sqsResponse);
+      if (sqsResponse != undefined) {
+        logger.info(`Served request with image name ${req.file.originalname}`);
+      }
     }
   }
 });
