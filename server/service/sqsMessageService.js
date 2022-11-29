@@ -20,7 +20,7 @@ AWS.config.update({ region: "us-east-1" });
 //Create SQS client
 const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
 
-const awsAccountId = 524883170635;
+const awsAccountId = 420224948553;
 const sqsInputQueue = "Request-Queue";
 const sqsOutputQueue = "Response-Queue";
 
