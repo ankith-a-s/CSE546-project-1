@@ -4,7 +4,7 @@ ec2_client = boto3.client('ec2', region_name='us-east-1')
 
 AMI_ID = "ami-08b69d15e0b2039cc"
 ROLE_ARN = "arn:aws:iam::378107157540:instance-profile/sqs-s3-ec2-full-access"
-KEY_NAME = "KeyPair1"
+KEY_NAME = "testingproject3"
 TAG_SPEC = [
     {
         "ResourceType": "instance",
