@@ -13,40 +13,20 @@ const { uploadImageToS3 } = require("./service/s3UploadService.js");
 
 const PORT = process.env.PORT || 3001;
 
-const timeoutLimit = 100000000000;
-
 const app = express();
 app.use(express.json());
 const upload = multer({ dest: __dirname + "uploads/" });
 
-const asyncCallWithTimeout = async (asyncPromise, timeLimit) => {
-    let timeoutHandle;
-
-    const timeoutPromise = new Promise((_resolve, reject) => {
-        timeoutHandle = setTimeout(
-            () => reject(new Error('Async call timeout limit reached')),
-            timeLimit
-        );
-    });
-
-    return Promise.race([asyncPromise, timeoutPromise]).then(result => {
-        clearTimeout(timeoutHandle);
-        return result;
-    })
-}
-
-app.post("/upload_files", upload.single("myfile"), uploadFiles);
-
-const uploadFiles = async (req, res) => {
-  const s3Result = await asyncCallWithTimeout(uploadImageToS3(req.file), timeoutLimit);
-  await asyncCallWithTimeout(unlinkFile(req.file.path), timeoutLimit);
+app.post("/upload_files", upload.single("myfile"), async (req, res) => {
+  const s3Result = await uploadImageToS3(req.file);
+  await unlinkFile(req.file.path);
   if (s3Result) {
-    const sqsResult = await asyncCallWithTimeout(sendMessageToSqs(req.file.originalname, res), timeoutLimit);
+    const sqsResult = await sendMessageToSqs(req.file.originalname, res);
     if (sqsResult != undefined) {
-      await asyncCallWithTimeout(receiveMessageFromSqs(req.file.originalname, res), timeoutLimit);
+      await receiveMessageFromSqs(req.file.originalname, res);
     }
   }
-}
+});
 
 app.use(express.static("./public"));
 
