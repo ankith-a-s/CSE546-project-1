@@ -11,7 +11,7 @@ def get_sqs_url(client):
 
 INPUT_QUEUE = get_sqs_url(sqs_client)
 
-WEB_TIER = "i-0be4b2f1aed851505"
+WEB_TIER = "i-0711d441e1e48e5b5"
 #APP_TIER = "i-082168043513b429a"
 
 
