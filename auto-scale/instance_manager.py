@@ -1,10 +1,9 @@
 import boto3
 
-ec2_client = boto3.client('ec2', region_name='us-east-1',aws_access_key_id="AKIASULQTZNR3JE4CZVM",
-    aws_secret_access_key="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")
+ec2_client = boto3.client('ec2', region_name='us-east-1')
 
 AMI_ID = "ami-04c3241d59e04ca70"
-ROLE_ARN = "arn:aws:iam::181161675619:role/aws-full-access"
+ROLE_ARN = "arn:aws:iam::692988731852:role/aws-full-access"
 KEY_NAME = "CC Project 1"
 TAG_SPEC = [
     {

@@ -4,9 +4,7 @@ import time
 
 sqs_client = boto3.client(
     'sqs',
-    region_name= "us-east-1",
-    aws_access_key_id="AKIASULQTZNR3JE4CZVM",
-    aws_secret_access_key="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"
+    region_name= "us-east-1"
 )
 
 
