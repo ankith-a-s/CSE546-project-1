@@ -2,7 +2,7 @@ import boto3
 
 ec2_client = boto3.client('ec2', region_name='us-east-1')
 
-AMI_ID = "ami-04c3241d59e04ca70"
+AMI_ID = "ami-0804f933d76b1a790"
 ROLE_ARN = "arn:aws:iam::692988731852:role/aws-full-access"
 KEY_NAME = "CC Project 1"
 TAG_SPEC = [
