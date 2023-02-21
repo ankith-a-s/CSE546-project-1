@@ -20,9 +20,9 @@ AWS.config.update({ region: "us-east-1" });
 //Create SQS client
 const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
 
-const awsAccountId = 420224948553;
-const sqsInputQueue = "Request-Queue";
-const sqsOutputQueue = "Response-Queue";
+const awsAccountId = 181161675619;
+const sqsInputQueue = "request-queue";
+const sqsOutputQueue = "response-queue";
 
 const sendMessageToSqs = (Image_Name, res) => {
   const params = {

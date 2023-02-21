@@ -1,17 +1,23 @@
 import instance_manager as ec2_util
 import boto3
+import time
 
-sqs_client = boto3.client('sqs', region_name="us-east-1")
+sqs_client = boto3.client(
+    'sqs',
+    region_name= "us-east-1",
+    aws_access_key_id="AKIASULQTZNR3JE4CZVM",
+    aws_secret_access_key="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"
+)
 
 
 def get_sqs_url(client):
-    sqs_queue = client.get_queue_url(QueueName="Request-Queue")
+    sqs_queue = client.get_queue_url(QueueName="request-queue")
     return sqs_queue["QueueUrl"]
 
 
 INPUT_QUEUE = get_sqs_url(sqs_client)
 
-WEB_TIER = "i-0711d441e1e48e5b5"
+WEB_TIER = "i-032535b3abb75d937"
 #APP_TIER = "i-082168043513b429a"
 
 
@@ -27,13 +33,12 @@ def auto_scale_instances():
     running_instances = ec2_util.get_running_instances()
     stopped_instances = ec2_util.get_stopped_instances()
     running_instances.remove(WEB_TIER)
-    #running_instances.remove(APP_TIER)
-
+    # running_instances.remove(APP_TIER)
 
     if queue_length == 0:
         all_instances = ec2_util.get_running_instances()
         all_instances.remove(WEB_TIER)
-        #all_instances.remove(APP_TIER)
+        # all_instances.remove(APP_TIER)
         print("Queue is empty, shutting down all instances except 1 (downscaling)")
         ec2_util.stop_multiple_instances(all_instances)
         return
@@ -51,7 +56,8 @@ def auto_scale_instances():
             length_of_stopped = len(stopped_instances)
             needed_instances = 10 - length_of_running
             if length_of_stopped >= needed_instances:
-                ec2_util.start_multiple_instances(stopped_instances[:needed_instances])
+                ec2_util.start_multiple_instances(
+                    stopped_instances[:needed_instances])
             else:
                 ec2_util.start_multiple_instances(stopped_instances)
                 for _ in range(needed_instances - length_of_stopped):
@@ -63,14 +69,16 @@ def auto_scale_instances():
             length_of_stopped = len(stopped_instances)
             needed_instances = 18 - length_of_running
             if length_of_stopped >= needed_instances:
-                ec2_util.start_multiple_instances(stopped_instances[:needed_instances])
+                ec2_util.start_multiple_instances(
+                    stopped_instances[:needed_instances])
             else:
                 ec2_util.start_multiple_instances(stopped_instances)
                 for _ in range(needed_instances - length_of_stopped):
                     ec2_util.create_instance()
 
 
-
 print("Starting Auto Scaling")
-auto_scale_instances()
+while(True):
+    auto_scale_instances()
+    time.sleep(30)
 exit(0)
