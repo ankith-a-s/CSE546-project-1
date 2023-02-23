@@ -106,8 +106,8 @@ if __name__=="__main__":
     request_queue = get_queue_url("request-queue")
     response_queue = get_queue_url("response-queue")
     image_name, reciept_handle = read_message(request_queue)
-    input_bucket = "inputimagernaik9"
-    output_bucket = "outputresultrnaik9"
+    input_bucket = "inputimagernaik99"
+    output_bucket = "outputresultrnaik99"
     if image_name!=None and reciept_handle!=None : 
         downoad_images(input_bucket, image_name)
         run_classification_engine()
