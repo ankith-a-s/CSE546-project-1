@@ -53,39 +53,26 @@ const receiveMessageFromSqs = (imageName, res) => {
   sqs.receiveMessage(params, (err, data) => {
     if (err) {
       console.log("receiveMessage");
-      res.status(400).send({
-        message: "Some error occured",
-        data,
-      });
+      logger.debug(`Some error occured in receiving messages, ${data}`);
     } else {
       if (data.Messages) {
-        const imageData = JSON.parse(data.Messages[0].Body);
-        if (Object.keys(imageData)[0] == imageName) {
+        for (let i = 0; i < data.Messages.length; i++) {
+          const imageData = JSON.parse(data.Messages[i].Body);
           const deleteParams = {
             QueueUrl: `https://sqs.us-east-1.amazonaws.com/${awsAccountId}/${sqsOutputQueue}`,
-            ReceiptHandle: data.Messages[0].ReceiptHandle,
+            ReceiptHandle: data.Messages[i].ReceiptHandle,
           };
           sqs.deleteMessage(deleteParams, (err, data) => {
             if (err) {
               console.log(err, err.stack);
-              res.status(400).send({
-                message: "Some error occured",
-                data,
-              });
+              logger.debug(`Some error occured in receiving messages, ${err}`);
             } else {
-              res.status(200).send({
-                message: imageData[imageName],
-              });
               console.log("reaching this point");
-              logger.info(`Served request with image name ${imageName}`);
+              logger.info(`Served request with image file name ===> ${Object.keys(imageData)[0]}, prediction ===> ${Object.values(imageData)[0]}`);
             }
           });
-        } else {
-          return receiveMessageFromSqs(imageName, res);
         }
-      } else {
-        return receiveMessageFromSqs(imageName, res);
-      }
+      } 
     }
   });
 };

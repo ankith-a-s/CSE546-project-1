@@ -23,10 +23,18 @@ app.post("/upload_files", upload.single("myfile"), async (req, res) => {
   if (s3Result) {
     const sqsResult = await sendMessageToSqs(req.file.originalname, res);
     if (sqsResult != undefined) {
-      await receiveMessageFromSqs(req.file.originalname, res);
+      res.status(200).send({
+        message: "Message sent to queue",
+      });
+    } else {
+      res.status(400).send({
+        message: "Some error occured"
+      });
     }
   }
 });
+
+setInterval(() => {receiveMessageFromSqs()}, 1000);
 
 app.use(express.static("./public"));
 
