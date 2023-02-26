@@ -53,7 +53,7 @@ const receiveMessageFromSqs = (imageName, res) => {
   sqs.receiveMessage(params, (err, data) => {
     if (err) {
       console.log("receiveMessage");
-      logger.debug(`Some error occured in receiving messages, ${data}`);
+      logger.debug(`Some error occured in receiving messages, ${data}, ${err}`);
     } else {
       if (data.Messages) {
         for (let i = 0; i < data.Messages.length; i++) {
